@@ -22,7 +22,7 @@ function result_func({player,enemy,timer_id}){
     clearTimeout(timer_id)
     document.querySelector("#result").style.display = "flex";
     if (player.health === enemy.health) {
-      document.querySelector("#result").innerHTML = "Tie";
+      document.querySelector("#result").innerHTML = "<h1>Tie</h1>";
     } else if (player.health >= enemy.health) {
       document.querySelector("#result").innerHTML = "<h1>Player 1 Won</h1>";
     } else if (player.health <= enemy.health) {

@@ -40,9 +40,9 @@ class Sprite {
       c.drawImage(
         this.image1,
         this.fireball.position.x,
-        this.fireball.position.y,
-        this.image1.width,
-        this.image1.height
+        this.fireball.position.y-10,
+        this.image1.width*2,
+        this.image1.height*2
       );
     } else {
       this.image1 = new Image();
@@ -50,9 +50,9 @@ class Sprite {
       c.drawImage(
         this.image1,
         this.fireball.position.x,
-        this.fireball.position.y,
-        this.image1.width,
-        this.image1.height
+        this.fireball.position.y-10,
+        this.image1.width*2,
+        this.image1.height*2
       );
     }
   }
