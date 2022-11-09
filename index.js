@@ -6,100 +6,25 @@ canvas.height = 576;
 
 c.fillRect(0, 0, canvas.width, canvas.height);
 
-class Sprite {
-  constructor({ position, velocity, color, offset, speed }) {
-    this.position = position;
-    this.velocity = velocity;
-    this.height = 150;
-    this.width = 50;
-    this.last_key;
-    this.attackBox = {
-      position: {
-        x: this.position.x,
-        y: this.position.y,
-      },
-      offset,
-      width: 100,
-      height: 50,
-    };
-    this.fireball = {
-      position: {
-        x: this.position.x,
-        y: this.position.y,
-      },
-      offset,
-      width: 20,
-      height: 20,
-      speed,
-    };
-    this.color = color;
-    this.isAttacking;
-    this.isfireball;
-    this.health = 100;
-  }
+const background_pic = new Sprite({
+  position: {
+    x: 0,
+    y: 0,
+  },
+  imageSrc: "./img/background.png",
+});
 
-  draw() {
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+const shop = new Sprite({
+  position: {
+    x: 600,
+    y: 128,
+  },
+  imageSrc: "./img/shop.png",
+  scale: 2.75,
+  max_frames: 6,
+});
 
-    //attak animation
-    if (this.isAttacking) {
-      c.fillStyle = "green";
-      c.fillRect(
-        this.attackBox.position.x,
-        this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-      );
-    }
-    if (this.isfireball) {
-      c.fillStyle = "orange";
-      c.fillRect(
-        this.fireball.position.x,
-        this.fireball.position.y,
-        this.fireball.width,
-        this.fireball.height
-      );
-    }
-  }
-
-  update() {
-    this.draw();
-    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-    this.attackBox.position.y = this.position.y;
-
-    this.position.y += this.velocity.y;
-    this.position.x += this.velocity.x;
-
-    if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-      this.velocity.y = 0;
-    } else this.velocity.y += gravity;
-
-    //fireball
-    if (this.isfireball) {
-      this.fireball.position.x += this.fireball.speed;
-      this.fireball.position.y = this.position.y + 50;
-    } else {
-      this.fireball.position.x = this.position.x;
-      this.fireball.position.y = this.position.y + 50;
-    }
-  }
-  attack() {
-    this.isAttacking = true;
-    setTimeout(() => {
-      this.isAttacking = false;
-    }, 100);
-  }
-  fireball_att() {
-    console.log("firball done");
-    this.isfireball = true;
-    setTimeout(() => {
-      this.isfireball = false;
-    }, 1000);
-  }
-}
-
-const player = new Sprite({
+const player = new Fighter({
   position: {
     x: 0,
     y: 0,
@@ -109,18 +34,64 @@ const player = new Sprite({
     y: 0,
   },
   offset: {
-    x: 0,
-    y: 0,
+    x: 150,
+    y: 150,
   },
   speed: 10,
   color: "red",
+  isenemy: false,
+  imageSrc: "./enemy/Idle.png",
+  max_frames: 10,
+  scale: 3,
+  sprites: {
+    idle: {
+      imageSrc: "./enemy/Idle.png",
+      max_frames: 10,
+    },
+    run: {
+      imageSrc: "./enemy/Run.png",
+      max_frames: 8,
+    },
+    jump: {
+      imageSrc: "./enemy/Jump.png",
+      max_frames: 3,
+    },
+    fall: {
+      imageSrc: "./enemy/Fall.png",
+      max_frames: 3,
+    },
+    attack: {
+      imageSrc: "./enemy/Attack3.png",
+      max_frames: 8,
+    },
+    fireball: {
+      imageSrc: "./enemy/Attack2.png",
+      max_frames: 5,
+    },
+    takehit: {
+      imageSrc: "./enemy/Takehit.png",
+      max_frames: 3,
+    },
+    death: {
+      imageSrc: "./enemy/Death.png",
+      max_frames: 7,
+    },
+  },
+  attackBox: {
+    offset: {
+      x: 0,
+      y: 0,
+    },
+    width: 200,
+    height: 50,
+  },
 });
 
 console.log(player);
 
-const enemy = new Sprite({
+const enemy = new Fighter({
   position: {
-    x: 975,
+    x: 955,
     y: 100,
   },
   velocity: {
@@ -132,6 +103,56 @@ const enemy = new Sprite({
   },
   speed: -10,
   color: "blue",
+  imageSrc: "./img/kenji/Idle.png",
+  max_frames: 4,
+  scale: 2.4,
+  isenemy: true,
+  offset: {
+    x: 215,
+    y: 155,
+  },
+  sprites: {
+    idle: {
+      imageSrc: "./img/kenji/Idle.png",
+      max_frames: 4,
+    },
+    run: {
+      imageSrc: "./img/kenji/Run.png",
+      max_frames: 8,
+    },
+    jump: {
+      imageSrc: "./img/kenji/Jump.png",
+      max_frames: 2,
+    },
+    fall: {
+      imageSrc: "./img/kenji/Fall.png",
+      max_frames: 2,
+    },
+    attack: {
+      imageSrc: "./img/kenji/Attack1.png",
+      max_frames: 4,
+    },
+    fireball: {
+      imageSrc: "./img/kenji/Attack2.png",
+      max_frames: 4,
+    },
+    takehit: {
+      imageSrc: "./img/kenji/Takehit.png",
+      max_frames: 3,
+    },
+    death: {
+      imageSrc: "./img/kenji/Death.png",
+      max_frames: 7,
+    },
+  },
+  attackBox: {
+    offset: {
+      x: -200,
+      y: 0,
+    },
+    width: 200,
+    height: 50,
+  },
 });
 const keys = {
   a: {
@@ -148,43 +169,54 @@ const keys = {
   },
 };
 
-function collision({ p1, p2 }) {
-  return (
-    p1.attackBox.position.x + p2.attackBox.width >= p2.position.x &&
-    p1.attackBox.position.x <= p2.position.x + p2.width &&
-    p1.attackBox.position.y + p1.attackBox.height >= p2.position.y &&
-    p1.attackBox.position.y <= p2.position.y + p2.height
-  );
-}
-function collision_ball({ p1, p2 }) {
-  return (
-    p1.fireball.position.x + p2.fireball.width >= p2.position.x &&
-    p1.fireball.position.x <= p2.position.x + p2.width &&
-    p1.fireball.position.y + p1.fireball.height >= p2.position.y &&
-    p1.fireball.position.y <= p2.position.y + p2.height
-  );
-}
-
 function anime() {
   window.requestAnimationFrame(anime);
   c.fillStyle = "black";
   c.fillRect(0, 0, canvas.width, canvas.height);
+  background_pic.update();
+  shop.update();
+  c.fillStyle = 'rgba(255,255,255,0.1)'
+  c.fillRect(0,0,canvas.width,canvas.height)
   player.update();
+  player.isenemy = false;
   enemy.update();
+  enemy.isenemy = true;
   player.velocity.x = 0;
   enemy.velocity.x = 0;
   //player
+
   if (keys.a.pressed && player.last_key === "a") {
     player.velocity.x = -5;
+    player.switchSprite("run");
   } else if (keys.d.pressed && player.last_key === "d") {
     player.velocity.x = 5;
+    player.switchSprite("run");
+  } else {
+    player.switchSprite("idle");
+  }
+
+  //jumping
+  if (player.velocity.y < 0) {
+    player.switchSprite("jump");
+  } else if (player.velocity.y > 0) {
+    player.switchSprite("fall");
   }
 
   //enemy
   if (keys.ArrowLeft.pressed && enemy.last_key === "ArrowLeft") {
     enemy.velocity.x = -5;
+    enemy.switchSprite("run");
   } else if (keys.ArrowRight.pressed && enemy.last_key === "ArrowRight") {
     enemy.velocity.x = 5;
+    enemy.switchSprite("run");
+  } else {
+    enemy.switchSprite("idle");
+  }
+
+  if (enemy.velocity.y < 0) {
+    enemy.switchSprite("jump");
+  } else if (enemy.velocity.y > 0) {
+    enemy.switchSprite("fall");
   }
 
   //sucessfull attack
@@ -197,7 +229,8 @@ function anime() {
   ) {
     player.isAttacking = false;
     player.isfireball = false;
-    enemy.health -= 5;
+    enemy.takeHit();
+
     console.log(
       enemy.position.y,
       player.attackBox.position.y + player.attackBox.height
@@ -213,6 +246,7 @@ function anime() {
   ) {
     enemy.isAttacking = false;
     enemy.isfireball = false;
+    player.takeHit();
     player.health -= 5;
     document.querySelector("#player").style.width = player.health + "%";
   }
@@ -225,6 +259,7 @@ function anime() {
     player.isfireball
   ) {
     player.isfireball = false;
+    enemy.takeHit();
     enemy.health -= 5;
     document.querySelector("#enemy").style.width = enemy.health + "%";
   }
@@ -236,87 +271,59 @@ function anime() {
     enemy.isfireball
   ) {
     enemy.isfireball = false;
+    player.takeHit();
     player.health -= 5;
     document.querySelector("#player").style.width = player.health + "%";
   }
   //End of the game
-  if(player.health<=0 || enemy.health<=0){
-    result_func({player,enemy,timer_id})
+  if (player.health <= 0 || enemy.health <= 0) {
+    result_func({ player, enemy, timer_id });
   }
-
-
-
-
-
 }
 anime();
-let timer = 60;
-let timer_id 
-
-function result_func({player,enemy,timer_id}){
-    clearTimeout(timer_id)
-    document.querySelector("#result").style.display = "flex";
-    if (player.health === enemy.health) {
-      document.querySelector("#result").innerHTML = "Tie";
-    } else if (player.health >= enemy.health) {
-      document.querySelector("#result").innerHTML = "Player Won";
-    } else if (player.health <= enemy.health) {
-      document.querySelector("#result").innerHTML = "Enemy Won";
-    }
-}
-
-
-
-function dec_timer() {
-  if (timer > 0) {
-    timer--;
-    timer_id = setTimeout(dec_timer, 1000);
-    document.querySelector("#timer").innerHTML = timer;
-  }
-
-  if (timer == 0) {
-    result_func({enemy,player})
-  }
-}
 dec_timer();
 
 window.addEventListener("keydown", (event) => {
-  switch (event.key) {
-    case "d":
-      keys.d.pressed = true;
-      player.last_key = "d";
-      break;
-    case "a":
-      keys.a.pressed = true;
-      player.last_key = "a";
-      break;
-    case "w":
-      player.velocity.y = -20;
-      break;
-    case " ":
-      player.attack();
-      break;
-    case "q":
-      player.fireball_att();
-      break;
-    case "ArrowRight":
-      keys.ArrowRight.pressed = true;
-      enemy.last_key = "ArrowRight";
-      break;
-    case "ArrowLeft":
-      keys.ArrowLeft.pressed = true;
-      enemy.last_key = "ArrowLeft";
-      break;
-    case "ArrowUp":
-      enemy.velocity.y = -20;
-      break;
-    case "ArrowDown":
-      enemy.attack();
-      break;
-    case "Shift":
-      enemy.fireball_att();
+  if (!player.dead)
+    switch (event.key) {
+      case "d":
+        keys.d.pressed = true;
+        player.last_key = "d";
+        break;
+      case "a":
+        keys.a.pressed = true;
+        player.last_key = "a";
+        break;
+      case "w":
+        player.velocity.y = -20;
+        break;
+      case " ":
+        player.attack();
+        break;
+      case "q":
+        player.fireball_att();
+        break;
+    }
+  if (!enemy.dead) {
+    switch (event.key) {
+      case "ArrowRight":
+        keys.ArrowRight.pressed = true;
+        enemy.last_key = "ArrowRight";
+        break;
+      case "ArrowLeft":
+        keys.ArrowLeft.pressed = true;
+        enemy.last_key = "ArrowLeft";
+        break;
+      case "ArrowUp":
+        enemy.velocity.y = -20;
+        break;
+      case "ArrowDown":
+        enemy.attack();
+        break;
+      case "Shift":
+        enemy.fireball_att();
+    }
   }
-  console.log(event.key);
 });
 window.addEventListener("keyup", (event) => {
   switch (event.key) {
