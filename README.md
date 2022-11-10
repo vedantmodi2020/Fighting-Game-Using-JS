@@ -1,2 +1,2 @@
-# Iwp_game_DA
+# Fighting Game
 A small fighting game using javascript canvas 
